@@ -1,18 +1,14 @@
-describe("1 - Crear tarea", () => {
-  it("Agregar una tarea a la lista", () => {
+describe("Pruebas Cypress", () => {
+  it("Crear tarea", () => {
     cy.visit("https://todomvc.com/examples/react/dist/#/"); // Visitamos la URL de la app
-
-    cy.get(".new-todo").type("Tarea 1{enter}"); //
-
+    cy.get(".new-todo").type("Tarea 1{enter}"); // Introducimos tarea por texto
     cy.get(".todo-list li")
       .should("have.length", 1)
       .first()
       .should("contain.text", "Tarea 1"); // Verificar que la tarea se ha creado
   });
-});
 
-describe("2 - Marcar tarea como completada", () => {
-  it("Cambiar estado de la tarea a completada", () => {
+  it("Marcar tarea como completada", () => {
     cy.visit("https://todomvc.com/examples/react/dist/#/");
     cy.get(".new-todo").type("Tarea a completar{enter}"); // Agregar una tarea
     cy.get(".todo-list li") // Seleccionar la tarea agregada
@@ -21,20 +17,16 @@ describe("2 - Marcar tarea como completada", () => {
       .click(); // Hacer clic para marcar como completada
     cy.get(".todo-list li").first().should("have.class", "completed"); // Verificar que la tarea esté marcada como completada
   });
-});
 
-describe("3 - Desmarcar tarea como completada", () => {
-  it("Cambiar estado de la tarea a pendiente", () => {
+  it("Desmarcar tarea como completada", () => {
     cy.visit("https://todomvc.com/examples/react/dist/#/");
     cy.get(".new-todo").type("Tarea a desmarcar{enter}");
     cy.get(".todo-list li").first().find(".toggle").click(); // Marcar tarea como completada
     cy.get(".todo-list li").first().find(".toggle").click(); // Desmarcar tarea
     cy.get(".todo-list li").first().should("not.have.class", "completed"); // Verificar que la tarea ya no está completada
   });
-});
 
-describe("4 - Editar tarea", () => {
-  it("Editar una tarea de la lista", () => {
+  it("Editar tarea", () => {
     cy.visit("https://todomvc.com/examples/react/dist/#/");
     cy.get(".new-todo").type("Tarea editable{enter}"); // Agregar una tarea
     cy.get(".todo-list li").first().dblclick(); // Hacer doble clic sobre la tarea para editar
@@ -47,9 +39,7 @@ describe("4 - Editar tarea", () => {
       .first() // Verificar que la tarea se haya editado
       .should("contain.text", "Tarea editada");
   });
-});
 
-describe("5 - Borrar tarea", () => {
   it("Borrar una tarea", () => {
     cy.visit("https://todomvc.com/examples/react/dist/#/");
     cy.get(".new-todo").type("Tarea a borrar{enter}"); // Agregar una tarea
@@ -60,9 +50,7 @@ describe("5 - Borrar tarea", () => {
     cy.get(".todo-list li") // Verificar que la tarea haya sido eliminada
       .should("have.length", 0);
   });
-});
 
-describe("6 - Filtrar tareas", () => {
   it("Filtrar tareas alternando entre All, Active, Completed", () => {
     cy.visit("https://todomvc.com/examples/react/dist/#/");
 
