@@ -80,7 +80,15 @@ describe("Pruebas Cypress", () => {
     cy.get(".todo-list li")
       .should("have.length", 1)
       .first()
-      .should("contain.text", "Tarea 1"); // Verificar que la tarea se ha creado
+      .should("contain.text", "a"); // Verificar que la tarea se ha creado
+  });
+
+  it("Añadir tarea con espacios antes del texto", () => {
+    cy.get(".new-todo").type("      texto{enter}"); // Introducimos tarea de un solo caracter
+    cy.get(".todo-list li")
+      .should("have.length", 1)
+      .first()
+      .should("contain.text", "      texto"); // Verificar que la tarea se ha creado
   });
 
   it("Añadir tarea que contenga caracteres especiales", () => {
@@ -118,15 +126,45 @@ describe("Pruebas Cypress", () => {
 
   it("Añadir tarea con caracteres específicos de varios idiomas", () => {
     // Texto con caracteres específicos de varios idiomas
-    const multilingualText = "Tarea con acentos áéíóú y caracteres especiales ñçªº";
+    const multilenguaje =
+      "Tarea con acentos áéíóú y caracteres especiales ñçªº";
 
     // Introducir el texto con caracteres especiales
-    cy.get(".new-todo").type(`${multilingualText}{enter}`);
+    cy.get(".new-todo").type(`${multilenguaje}{enter}`);
 
     // Verificar que la tarea se agregó
     cy.get(".todo-list li").should("have.length", 1);
 
     // Verificar que el texto de la tarea coincide con el texto introducido
-    cy.get(".todo-list li").first().should("contain.text", multilingualText);
+    cy.get(".todo-list li").first().should("contain.text", multilenguaje);
+  });
+
+  it("Añadir una tarea con texto extremadamente largo", () => {
+    // Texto extremadamente largo
+    const textoLargo = "x".repeat(1000);
+
+    // Introducir el texto extremadamente largo
+    cy.get(".new-todo").type(`${textoLargo}{enter}`);
+
+    // Verificar que la tarea se agregó
+    cy.get(".todo-list li").should("have.length", 1);
+
+    // Verificar que el texto mostrado en la tarea es exactamente igual al texto introducido
+    cy.get(".todo-list li").first().should("contain.text", textoLargo);
+  });
+
+  it("Añadir 500 tareas", () => {
+    // Cantidad de tareas a añadir
+    const numTareas = 500;
+    for (let i = 1; i <= numTareas; i++) {
+      cy.get(".new-todo").type(`Tarea ${i}{enter}`);
+    }
+
+    // Verificar que se han creado exactamente 1000 tareas
+    cy.get(".todo-list li").should("have.length", numTareas);
+
+    // Verificar que las primeras y últimas tareas tienen el texto correcto
+    cy.get(".todo-list li").first().should("contain.text", "Tarea 1"); // Primera tarea
+    cy.get(".todo-list li").last().should("contain.text", `Tarea ${numTareas}`); // Última tarea
   });
 });
