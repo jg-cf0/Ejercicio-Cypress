@@ -102,6 +102,23 @@ describe("Pruebas Cypress", () => {
       .should("contain.text", specialCharacters); // Verifica que el texto de la tarea es igual al introducido
   });
 
+  it("Crear tarea duplicada", () => {
+    // Nombre de la tarea duplicada
+    const duplicada = "Tarea duplicada";
+
+    // Agregar la tarea por primera vez
+    cy.get(".new-todo").type(`${duplicada}{enter}`);
+
+    // Agregar la misma tarea nuevamente
+    cy.get(".new-todo").type(`${duplicada}{enter}`);
+
+    // Verificar que se han creado exactamente dos tareas con el mismo nombre
+    cy.get(".todo-list li").should("have.length", 2);
+    cy.get(".todo-list li").each((task) => {
+    cy.wrap(task).should("contain.text", duplicada);
+    });
+  });
+
   it("Mantener tareas al recargar página", () => {
     // Crear varias tareas
     cy.get(".new-todo").type("Tarea 1{enter}");
