@@ -1,6 +1,9 @@
 describe("Pruebas Cypress", () => {
+  beforeEach(() => {
+    cy.visit("https://todomvc.com/examples/react/dist/#/"); // Visitamos la URL de la app antes de cada test
+  });
+
   it("Crear tarea", () => {
-    cy.visit("https://todomvc.com/examples/react/dist/#/"); // Visitamos la URL de la app
     cy.get(".new-todo").type("Tarea 1{enter}"); // Introducimos tarea por texto
     cy.get(".todo-list li")
       .should("have.length", 1)
@@ -9,7 +12,6 @@ describe("Pruebas Cypress", () => {
   });
 
   it("Marcar tarea como completada", () => {
-    cy.visit("https://todomvc.com/examples/react/dist/#/");
     cy.get(".new-todo").type("Tarea a completar{enter}"); // Agregar una tarea
     cy.get(".todo-list li") // Seleccionar la tarea agregada
       .first()
@@ -19,7 +21,6 @@ describe("Pruebas Cypress", () => {
   });
 
   it("Desmarcar tarea como completada", () => {
-    cy.visit("https://todomvc.com/examples/react/dist/#/");
     cy.get(".new-todo").type("Tarea a desmarcar{enter}");
     cy.get(".todo-list li").first().find(".toggle").click(); // Marcar tarea como completada
     cy.get(".todo-list li").first().find(".toggle").click(); // Desmarcar tarea
@@ -27,7 +28,6 @@ describe("Pruebas Cypress", () => {
   });
 
   it("Editar tarea", () => {
-    cy.visit("https://todomvc.com/examples/react/dist/#/");
     cy.get(".new-todo").type("Tarea editable{enter}"); // Agregar una tarea
     cy.get(".todo-list li").first().dblclick(); // Hacer doble clic sobre la tarea para editar
     cy.get(".todo-list li")
@@ -41,7 +41,6 @@ describe("Pruebas Cypress", () => {
   });
 
   it("Borrar una tarea", () => {
-    cy.visit("https://todomvc.com/examples/react/dist/#/");
     cy.get(".new-todo").type("Tarea a borrar{enter}"); // Agregar una tarea
     cy.get(".todo-list li")
       .first()
@@ -52,8 +51,6 @@ describe("Pruebas Cypress", () => {
   });
 
   it("Filtrar tareas alternando entre All, Active, Completed", () => {
-    cy.visit("https://todomvc.com/examples/react/dist/#/");
-
     // Agregar tareas con diferentes estados
     cy.get(".new-todo").type("Tarea 1{enter}"); // Agregar la primera tarea
     cy.get(".new-todo").type("Tarea 2{enter}"); // Agregar la segunda tarea
@@ -76,5 +73,60 @@ describe("Pruebas Cypress", () => {
     // Volver a mostrar todas las tareas (All)
     cy.get(".filters").contains("All").click(); // Hacer clic en el botón "All"
     cy.get(".todo-list li").should("have.length", 2); // Verificar que se muestran las 2 tareas
+  });
+
+  it("Añadir tarea con un solo carácter", () => {
+    cy.get(".new-todo").type("a{enter}"); // Introducimos tarea de un solo caracter
+    cy.get(".todo-list li")
+      .should("have.length", 1)
+      .first()
+      .should("contain.text", "Tarea 1"); // Verificar que la tarea se ha creado
+  });
+
+  it("Añadir tarea que contenga caracteres especiales", () => {
+    // Cadena con caracteres especiales para introducirlo en el texto
+    const specialCharacters = "!@#$%^&*()_+[]{}|;:',.<>?/`~";
+
+    cy.get(".new-todo").type(`${specialCharacters}{enter}`); // Introducimos caracteres especiales y presionar Enter
+    cy.get(".todo-list li") // Seleccionamos la lista de tareas
+      .should("have.length", 1) // Verifica que se haya agregado una tarea
+      .first()
+      .should("contain.text", specialCharacters); // Verifica que el texto de la tarea es igual al introducido
+  });
+
+  it("Mantener tareas al recargar página", () => {
+    // Crear varias tareas
+    cy.get(".new-todo").type("Tarea 1{enter}");
+    cy.get(".new-todo").type("Tarea 2{enter}");
+    cy.get(".new-todo").type("Tarea 3{enter}");
+
+    // Verificar que las tareas están presentes
+    cy.get(".todo-list li").should("have.length", 3);
+    cy.get(".todo-list li").eq(0).should("contain.text", "Tarea 1");
+    cy.get(".todo-list li").eq(1).should("contain.text", "Tarea 2");
+    cy.get(".todo-list li").eq(2).should("contain.text", "Tarea 3");
+
+    // Recargar la página
+    cy.reload();
+
+    // Verificar nuevamente que las tareas persisten tras la recarga
+    cy.get(".todo-list li").should("have.length", 3);
+    cy.get(".todo-list li").eq(0).should("contain.text", "Tarea 1");
+    cy.get(".todo-list li").eq(1).should("contain.text", "Tarea 2");
+    cy.get(".todo-list li").eq(2).should("contain.text", "Tarea 3");
+  });
+
+  it("Añadir tarea con caracteres específicos de varios idiomas", () => {
+    // Texto con caracteres específicos de varios idiomas
+    const multilingualText = "Tarea con acentos áéíóú y caracteres especiales ñçªº";
+
+    // Introducir el texto con caracteres especiales
+    cy.get(".new-todo").type(`${multilingualText}{enter}`);
+
+    // Verificar que la tarea se agregó
+    cy.get(".todo-list li").should("have.length", 1);
+
+    // Verificar que el texto de la tarea coincide con el texto introducido
+    cy.get(".todo-list li").first().should("contain.text", multilingualText);
   });
 });
