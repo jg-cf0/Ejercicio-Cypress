@@ -93,13 +93,13 @@ describe("Pruebas Cypress", () => {
 
   it("Añadir tarea que contenga caracteres especiales", () => {
     // Cadena con caracteres especiales para introducirlo en el texto
-    const specialCharacters = "!@#$%^&*()_+[]{}|;:',.<>?/`~";
+    const caracteresEspec = "!@#$%^&*()_+[]{}|;:',.<>?/`~";
 
-    cy.get(".new-todo").type(`${specialCharacters}{enter}`); // Introducimos caracteres especiales y presionar Enter
+    cy.get(".new-todo").type(`${caracteresEspec}{enter}`); // Introducimos caracteres especiales y presionar Enter
     cy.get(".todo-list li") // Seleccionamos la lista de tareas
       .should("have.length", 1) // Verifica que se haya agregado una tarea
       .first()
-      .should("contain.text", specialCharacters); // Verifica que el texto de la tarea es igual al introducido
+      .should("contain.text", caracteresEspec); // Verifica que el texto de la tarea es igual al introducido
   });
 
   it("Crear tarea duplicada", () => {

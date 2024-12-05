@@ -1,0 +1,19 @@
+stages:
+  - test
+
+cypress_test:
+  stage: test
+  image: cypress/base:16.16.0
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  before_script:
+    - npm install
+  script:
+    - npx cypress run --spec "cypress/e2e/todo.cy.js"
+  artifacts:
+    paths:
+      - cypress/screenshots/
+      - cypress/videos/
+    when: always
