@@ -6,3 +6,8 @@ cypress_test:
   image: cypress/included:13.0.0
   script:
     - cypress run --spec "cypress/e2e/todo.cy.js"
+  artifacts:
+    paths:
+      - cypress/screenshots/
+      - cypress/videos/
+    when: always
