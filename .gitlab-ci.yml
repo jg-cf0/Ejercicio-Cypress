@@ -10,7 +10,8 @@ cypress-e2e-test:
     - npx cypress run --spec "cypress/e2e/todo.cy.js" --browser chrome
   allow_failure: true   # Permite que el trabajo falle sin afectar el pipeline
   artifacts:
-    paths: cypress/
+    paths: 
+      - cypress/
     when: always
   only:
     - main
