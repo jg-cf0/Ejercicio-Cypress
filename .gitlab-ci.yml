@@ -2,7 +2,9 @@ stages:
   - test
 
 cypress-e2e-test:
-  image: cypress/browsers:node18.12.0-chrome103-ff107
+  image: 
+    name: cypress/browsers:node18.12.0-chrome103-ff107 
+    entrypoint: [""]
   stage: test
   script:
     - npm ci
