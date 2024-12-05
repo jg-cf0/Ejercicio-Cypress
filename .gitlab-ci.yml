@@ -7,8 +7,3 @@ cypress-e2e-test:
   script:
     - npm install
     - npm run e2e:chrome
-  artifacts:
-    paths:
-      - cypress/screenshots/
-      - cypress/videos/
-    when: always
