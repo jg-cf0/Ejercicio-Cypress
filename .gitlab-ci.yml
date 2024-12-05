@@ -8,9 +8,5 @@ cypress-e2e-test:
     - npm ci
     - ls -R cypress/e2e  # Verificar los archivos en la ruta
     - npx cypress run --spec "cypress/e2e/todo.cy.js" --browser chrome
-  artifacts:
-    paths:
-      - cypress/screenshots/
-      - cypress/videos/
   only:
     - main
