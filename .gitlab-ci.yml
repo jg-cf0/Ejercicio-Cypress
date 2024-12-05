@@ -8,6 +8,7 @@ cypress-e2e-test:
     - npm ci
     - ls -R cypress/e2e  # Verificar los archivos en la ruta
     - npx cypress run --spec "cypress/e2e/todo.cy.js" --browser chrome
+    - echo "Cleaning up project directory and file based variables"
   allow_failure: true   # Permite que el trabajo falle sin afectar el pipeline
   only:
     - main
