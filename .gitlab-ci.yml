@@ -4,17 +4,9 @@ stages:
 cypress-e2e-test:
   image: cypress/browsers:node18.12.0-chrome103-ff107
   stage: test
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - node_modules/
-  before_script:
-    - npm install # Instala dependencias del proyecto, incluyendo Cypress
-    - chmod +x ./node_modules/.bin/cypress # Ajusta permisos
   script:
-    - echo "Running Cypress Tests"
-    - npx cypress run --spec "cypress/e2e/todo.cy.js" --browser chrome
-    - echo "Tests completed successfully."
+    - npm install
+    - npm run e2e:chrome
   artifacts:
     paths:
       - cypress/screenshots/
