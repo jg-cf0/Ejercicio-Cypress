@@ -20,7 +20,11 @@ jobs:
         node-version: '18'
 
     - name: Install dependencies
-      run: npm install
+      run: npm ci
+
+    - name: Set permissions
+      run: chmod +x ./node_modules/.bin/cypress
 
     - name: Run Cypress Tests
       run: npx cypress run --spec cypress/e2e/todo.cy.js
+
